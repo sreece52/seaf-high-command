@@ -21,11 +21,13 @@ module.exports = {
 
 		message += createPlanetMessage(planets);
 
-		message += "# __Major Orders__\n";
+		if (warStatusJson.global_events.length != 0) {
+			message += "# __Major Orders__\n";
 
-		console.log(warStatusJson.global_events.forEach((orders) => {
-			message += orders.message.en + "\n"
-		}));
+			warStatusJson.global_events.forEach((orders) => {
+				message += orders.message.en + "\n"
+			});
+		}
 
 		message += "# <END OF TRANSMISSION>\n"
 
@@ -44,8 +46,6 @@ function getPlanets(indexes, planetStatus) {
 	indexes.forEach((index) => {
 		planets.push(planetStatus.filter((planetStatus) => planetStatus.planet.index === index)[0]); 
 	})
-
-	console.log(planets)
 
 	return planets;
 }
