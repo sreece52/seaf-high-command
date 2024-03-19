@@ -1,4 +1,7 @@
 {
-	"clientId": "",
-	"guildId": ""
+	"clientId": "1218218488347361350",
+	"guildId": "763919530232905768",
+	"api_host": "https://helldivers-2.fly.dev",
+	"patch_note_interval": 3600000,
+	"feed_url": "https://store.steampowered.com/feeds/news/app/553850/?cc=US&l=english"
 }
