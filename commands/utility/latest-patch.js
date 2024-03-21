@@ -1,47 +1,23 @@
 const { SlashCommandBuilder } = require('discord.js');
-const Parser  = require("rss-parser");
+const { EmbedBuilder } = require('discord.js');
 
-const { feed_url } = require('../../config.json');
-
-
-
+const { getLatest } = require('../../utils/patch-util');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('latest-patch')
 		.setDescription('Retrieves the latest patch notes'),
 	async execute(interaction) {
-        await interaction.reply('Retrieving the latest patch notes:');
+        getLatest(async (item) => {
+            const description = `Latest patch notes for ${item.title}`
 
-        const parse = async url => {
-            let parser = new Parser ();
-            const feed = await parser.parseURL(url);
+            const embed = new EmbedBuilder()
+                .setColor(0x0099FF)
+                .setTitle(item.title)
+                .setDescription(description)
+                .setURL(item.link)
 
-            let contentLength = feed.items[0].contentSnippet.length;
-
-            if (contentLength <= 2000) {
-                await interaction.followUp(feed.items[0].contentSnippet);
-            } else {
-
-                let numMessages = Math.floor(contentLength / 2000);
-                
-                startIndex = 0;
-                endIndex = 2000;
-                
-                for (i = 0; i < numMessages; i++) {
-                    await interaction.followUp(feed.items[0].contentSnippet.substring(startIndex, endIndex));
-                    startIndex = endIndex;
-                    if ((contentLength - endIndex) < 2000) {
-                        break;
-                    } else {
-                        endIndex += 2000;
-                    }
-                }
-
-                await interaction.followUp(feed.items[0].contentSnippet.substring(startIndex));
-            }
-        };
-        
-        parse(feed_url);
+            await interaction.reply({embeds: [ embed ]});
+        });    
 	},
 };

@@ -1,9 +1,8 @@
 require('dotenv').config()
+const { checkForUpdates } = require('./utils/patch-util');
 const fs = require('node:fs');
 const path = require('node:path');
-
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const token = process.env.TOKEN;
+const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -28,17 +27,34 @@ for (const folder of commandFolders) {
 	}
 }
 
-
-
 // When the client is ready, run this code (only once).
 // The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	setInterval(() => {
+		checkForUpdates(async(item) => {
+			if(!item) {
+				return;
+			}
+
+			const channel = client.channels.cache.find(channel => channel.name === "general");
+
+			const description = `Latest patch notes availible for ${item.title}`
+
+            const embed = new EmbedBuilder()
+                .setColor(0x0099FF)
+                .setTitle(item.title)
+                .setDescription(description)
+                .setURL(item.link)
+
+			channel.send({embeds: [embed]})
+		})
+	}, 1800000);
 });
 
 // Log in to Discord with your client's token
-client.login(token);
+client.login(process.env.TOKEN);
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
