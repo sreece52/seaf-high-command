@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({path: path.join(__dirname, '.env')})
 const { checkForUpdates } = require('./utils/patch-util');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -36,7 +36,7 @@ client.once(Events.ClientReady, readyClient => {
 		if (!channel) {
 			return;
 		}
-		
+
 		checkForUpdates(async(item) => {
 			if(!item) {
 				return;
