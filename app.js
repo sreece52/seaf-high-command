@@ -2,7 +2,7 @@ require('dotenv').config()
 const { checkForUpdates } = require('./utils/patch-util');
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder, ChannelType } = require('discord.js');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -33,19 +33,21 @@ for (const folder of commandFolders) {
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 	setInterval(() => {
+		if (!channel) {
+			return;
+		}
+		
 		checkForUpdates(async(item) => {
 			if(!item) {
 				return;
 			}
 
-			const channel = client.channels.cache.find(channel => channel.name === "general");
-
-			const description = `Latest patch notes availible for ${item.title}`
+			const channel = client.channels.cache.find(channel => channel.name === "seaf-high-command");
 
             const embed = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setTitle(item.title)
-                .setDescription(description)
+                .setDescription(`Latest patch notes availible for ${item.title}`)
                 .setURL(item.link)
 
 			channel.send({embeds: [embed]})
