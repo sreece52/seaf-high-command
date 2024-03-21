@@ -1,8 +1,8 @@
-require('dotenv').config({path: path.join(__dirname, '.env')})
 const { checkForUpdates } = require('./utils/patch-util');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder, ChannelType } = require('discord.js');
+require('dotenv').config({path: path.join(__dirname, '.env')})
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
