@@ -3,11 +3,16 @@ const { EmbedBuilder } = require('discord.js');
 
 const { getLatest } = require('../../patch-util');
 
+const logger = require('../../app-logger');
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('latest-patch')
 		.setDescription('Retrieves the latest patch notes'),
 	async execute(interaction) {
+
+        logger.info(`Command recieved: ${interaction}`)
+
         getLatest(async (item) => {
             const description = `Latest patch notes for ${item.title}`
 
