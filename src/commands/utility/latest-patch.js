@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
-const { getLatest } = require('../../utils/patch-util');
+const { getLatest } = require('../../patch-util');
 
 module.exports = {
 	data: new SlashCommandBuilder()
