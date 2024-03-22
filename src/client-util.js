@@ -1,11 +1,10 @@
 const { Client, Events, GatewayIntentBits, EmbedBuilder, Collection } = require('discord.js');
 const fs = require('node:fs')
 const path = require('node:path');
-const winston = require('winston');
-
+const logger = require('../src/app-logger');
 
 module.exports = {
-    configureClient: () => {
+    startClient: () => {
         let client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
         initCommands(client);
@@ -38,14 +37,14 @@ function initCommands(client) {
             if ('data' in command && 'execute' in command) {
                 client.commands.set(command.data.name, command);
             } else {
-                winston.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+                logger.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
             }
         }
     }
 }
 
 async function readyHandler(client) {
-    winston.info("Application is ready to use.");
+    logger.info("Application is ready to use.");
 
     setInterval(() => {
         checkForUpdates(async(item) => {
@@ -72,14 +71,14 @@ async function createInteractionHandler(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);
 
     if (!command) {
-        winston.error(`No command matching ${interaction.commandName} was found.`);
+        logger.error(`No command matching ${interaction.commandName} was found.`);
         return;
     }
 
     try {
         await command.execute(interaction);
     } catch (error) {
-        winston.error(error);
+        logger.error(error);
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
         } else {
