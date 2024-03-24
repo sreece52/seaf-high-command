@@ -1,2 +1,2 @@
 # seaf-high-command
-Work in progress
+Work in progress Discprd bot
