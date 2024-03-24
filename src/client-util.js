@@ -2,6 +2,7 @@ const { Client, Events, GatewayIntentBits, EmbedBuilder, Collection } = require(
 const fs = require('node:fs')
 const path = require('node:path');
 const logger = require('../src/app-logger');
+const { checkForUpdates } = require('../src/patch-util')
 
 module.exports = {
     startClient: () => {
@@ -16,7 +17,7 @@ module.exports = {
         client.login(process.env.TOKEN);
         
         client.on(Events.InteractionCreate, async interaction => {
-            createInteractionHandler(interaction);
+            interactionHandler(interaction);
         });
     }
 }
@@ -65,7 +66,7 @@ async function readyHandler(client) {
     }, 1800000);
 }
 
-async function createInteractionHandler(interaction) {
+async function interactionHandler(interaction) {
     if (!interaction.isChatInputCommand()) return;
         
     const command = interaction.client.commands.get(interaction.commandName);

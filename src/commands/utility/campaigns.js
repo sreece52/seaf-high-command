@@ -1,11 +1,15 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
+const logger = require('../../app-logger');
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('campaigns')
 		.setDescription('Receive latest galactic war campaign statuses'),
 	async execute(interaction) {
+        logger.info(`COMMAND=<name=${interaction}, id=${interaction.id}> recieved from GUILD=<name=${interaction.guild}, id=${guild_id=interaction.guild.id}> initiated by USER=<username=${interactionGuildMember.user.username}, id=${interactionGuildMember.id}`)
+
 		let warStatus = await getWarStatus();
 
 		let warStatusJson = await warStatus.json();

@@ -10,8 +10,9 @@ module.exports = {
 		.setName('latest-patch')
 		.setDescription('Retrieves the latest patch notes'),
 	async execute(interaction) {
+        const interactionGuildMember= await interaction.guild.members.fetch(interaction.user.id)
 
-        logger.info(`Command recieved: ${interaction}`)
+        logger.info(`COMMAND=<name=${interaction}, id=${interaction.id}> recieved from GUILD=<name=${interaction.guild}, id=${guild_id=interaction.guild.id}> initiated by USER=<username=${interactionGuildMember.user.username}, id=${interactionGuildMember.id}`)
 
         getLatest(async (item) => {
             const description = `Latest patch notes for ${item.title}`
