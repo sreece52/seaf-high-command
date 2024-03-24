@@ -1,2 +1,2 @@
 # seaf-high-command
-Work in progress Discprd bot
+Work in progress Discord bot
