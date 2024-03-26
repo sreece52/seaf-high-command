@@ -8,9 +8,6 @@ module.exports = {
 		.setName('campaigns')
 		.setDescription('Receive latest galactic war campaign statuses'),
 	async execute(interaction) {
-		const interactionGuildMember= await interaction.guild.members.fetch(interaction.user.id)
-
-        logger.info(`COMMAND=<name=${interaction}, id=${interaction.id}> recieved from GUILD=<name=${interaction.guild}, id=${guild_id=interaction.guild.id}> initiated by USER=<username=${interactionGuildMember.user.username}, id=${interactionGuildMember.id}`)
 
 		let warStatus = await getWarStatus();
 

@@ -76,10 +76,20 @@ async function interactionHandler(interaction) {
         return;
     }
 
+    const interactionGuildMember = await interaction.guild.members.fetch(interaction.user.id)
+
+    const child = logger.child({
+        interaction: interaction,
+        GuildMember: interactionGuildMember,
+        service: "client-util"
+    })
+
     try {
+        child.info('Executing Interaction');
+
         await command.execute(interaction);
     } catch (error) {
-        logger.error(error.message);
+        child.error(error.message);
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
         } else {
